@@ -1,0 +1,28 @@
+:root {
+    --theme-color: #18b5ee;
+}
+body,
+header,
+button,
+input[type="text"],
+input[type="number"],
+.select-container,
+#timer {
+    color: var(--theme-color);
+}
+select {
+    color: var(--theme-color);
+}
+svg *:not(text) {
+    stroke: var(--theme-color);
+}
+text {
+    fill: var(--theme-color);
+}
+input[type="checkbox"] {
+    -webkit-filter: saturate(1);
+    filter: saturate(1);
+}
+.light-on {
+    fill: var(--theme-color);
+}
