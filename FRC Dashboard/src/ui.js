@@ -83,20 +83,20 @@ NetworkTables.addKeyListener('/SmartDashboard/drive/navx/yaw', updateGyro);
 // The following case is an example, for a robot with an arm at the front.
 NetworkTables.addKeyListener('/SmartDashboard/arm/encoder', (key, value) => {
     // 0 is all the way back, 1200 is 45 degrees forward. We don't want it going past that.
-    if (value > 1200) {
-        value = 1200;
+    if (value > 28000) {
+        value = 28000;
     }
     else if (value < 0) {
         value = 0;
     }
     // Calculate visual rotation of arm
-    var height = 160 + (value / 6);
+    var height = 160 + (value / (140));    //Should scale the arm correctly
     // Rotate the arm in diagram to match real arm
 
     function updateGuide(value, test, level) {
         var line = document.getElementById(level + "-guide-line");
         var text = document.getElementById(level + "-guide-text");
-        if (test - 60 < value && value < test + 60) {
+        if (test - 1000 < value && value < test + 1000) {
             if (!line.classList.contains('guide-line-on')) {
                 line.classList.add("guide-line-on");
                 line.classList.remove("guide-line-off");
@@ -115,9 +115,9 @@ NetworkTables.addKeyListener('/SmartDashboard/arm/encoder', (key, value) => {
     }
 
     updateGuide(value, 0, "high");
-    updateGuide(value, 400, "middle");
-    updateGuide(value, 800, "low");
-    updateGuide(value, 1200, "pickup");
+    updateGuide(value, 9333.333, "middle");
+    updateGuide(value, 18666.666, "low");
+    updateGuide(value, 28000, "pickup");
 
     ui.robotDiagram.arm.style.y = String(height);
 });

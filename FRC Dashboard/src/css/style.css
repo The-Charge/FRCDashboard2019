@@ -111,10 +111,34 @@ text {
     stroke: none;
     fill: white;
 }
+.on-fill {
+    fill: lime;
+}
+.on-stroke {
+    stroke: lime;
+}
+.off-fill {
+    fill: red;
+}
+.off-stroke {
+    stroke: red;
+}
+.status-text {
+    font-size: 30px;
+    font-weight: 700;
+}
+#line-follow {
+    width: 125px;
+    height: 175px;
+}
+#ball-pickup {
+    width: 125px;
+    height: 175px;
+}
 #gyro {
     width: 175px;
     height: 175px;
-    margin-left: 30px;
+    margin-left: 0px;
     margin-top: 15px;
 }
 #gyro-arm {

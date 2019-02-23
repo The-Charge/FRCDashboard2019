@@ -57,6 +57,28 @@
             <circle id="light_3" class="line-follow-light" cx="130" cy="50" r="5"></circle>
             <circle id="light_4" class="line-follow-light" cx="145" cy="50" r="5"></circle>
         </svg> -->
+        <!-- Line Detector -->
+        <svg id="line-follow">
+            <!-- <line x1="0" y1="0" x2="1000" y2="0"/>
+            <line x1="0" y1="0" x2="0" y2="1000"/> -->
+
+            <text x="5" y="20">Line Follow:</text>
+            <text class="status-text on-fill" x="5" y="50">Found</text>
+            <line class="border" x1="5" y1="65" x2="120" y2="65"/>
+            <circle class="on-fill on-stroke" cx="62.5" cy="110" r="30"/>
+            
+        </svg>
+        <!-- Ball Detector -->
+        <svg id="ball-pickup">
+            <!-- <line x1="0" y1="0" x2="1000" y2="0"/>
+            <line x1="0" y1="0" x2="0" y2="1000"/> -->
+    
+            <text x="5" y="20">Ball Sensor:</text>
+            <text class="status-text off-fill" x="5" y="50">None</text>
+            <line class="border" x1="5" y1="65" x2="120" y2="65"/>
+            <!-- <circle class="off-fill off-stroke" cx="62.5" cy="110" r="30"/> -->
+            <polygon class="off-fill off-stroke" points="50,80 80,80 70,100 80,100 40,140 50,105 40,105" />
+        </svg>
         <!-- Robot Diagram -->
         <svg id="robot-diagram" width="450" height="450">
             <!-- Guide lines -->
@@ -93,10 +115,10 @@
             <text id="team" x="235" y="405" text-anchor="middle">2619</text>
 
             <!-- Warning light -->
-            <polygon class="guide-warning" points="245,130 260,105 275,130"></polygon>
+            <!-- <polygon class="guide-warning" points="245,130 260,105 275,130"></polygon>
             <text class="guide-warning-icon-text" x="260" y="125" text-anchor="middle">!</text>
             <text class="guide-warning-text" x="280" y="115" text-anchor="left">Elevator/Pickup</text>
-            <text class="guide-warning-text" x="280" y="135" text-anchor="left">Collision</text>
+            <text class="guide-warning-text" x="280" y="135" text-anchor="left">Collision</text> -->
         </svg>
     </article>
 
@@ -113,6 +135,8 @@
                     <option>red</option>
                     <option>blue</option>
                     <option>rainbow</option>
+                    <option>dhs</option>
+                    <option>mhs</option>
                 </select>
             </div>
         </div>
@@ -131,7 +155,7 @@
         <!-- Elevator display -->
         <div>
             <p>Adjust arm height</p>
-            <input id="arm-position" type="range" min="0" max="1200" value="770">
+            <input id="arm-position" type="range" min="0" max="28000" value="770">
         </div>
         <!-- Pickup display -->
         <div>

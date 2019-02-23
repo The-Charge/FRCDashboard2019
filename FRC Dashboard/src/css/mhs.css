@@ -1,0 +1,36 @@
+body > * {
+    background: rgb(43, 110, 197);
+}
+body,
+header,
+button,
+input[type="text"],
+input[type="number"],
+.select-container,
+#timer {
+    color: rgb(255, 230, 0);
+}
+select {
+    color: rgb(255, 230, 0);
+    background: rgb(43, 110, 197);
+}
+button,
+input[type="text"],
+input[type="number"],
+.select-container,
+select {
+    background: rgb(28, 59, 116);
+}
+svg *:not(text) {
+    stroke: rgb(255, 230, 0);
+    fill: rgb(43, 110, 197);
+}
+text {
+    fill: rgb(255, 230, 0);
+}
+#camera {
+    background-color: rgb(28, 59, 116);
+}
+.light-on {
+    fill: rgb(255, 230, 0);
+}
