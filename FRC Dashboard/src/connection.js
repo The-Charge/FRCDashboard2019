@@ -50,6 +50,7 @@ function setLogin() {
   // Add the default address and select xxxx (old: roborio-xxxx-frc.local)
   address.value = '10.26.19.2';
   address.focus();
+  // address.setSelectionRange(8, 12);
 }
 // On click try to connect and disable the input and the button
 connect.onclick = () => {
