@@ -19,6 +19,8 @@ let ui = {
         button: document.getElementById('example-button'),
         readout: document.getElementById('example-readout').firstChild
     },
+    ballIcon: document.getElementById('ball-icon'),
+    ballText: document.getElementById('ball-text'),
     autoSelect: document.getElementById('auto-select'),
     armPosition: document.getElementById('arm-position'),
     pickupPosition: document.getElementById('pickup-position')
@@ -79,6 +81,24 @@ let updateGyro = (key, value) => {
     ui.gyro.number.innerHTML = ui.gyro.visualVal + 'º';
 };
 NetworkTables.addKeyListener('/SmartDashboard/drive/navx/yaw', updateGyro);
+
+NetworkTables.addKeyListener('/SmartDashboard/Ball Detected',(key, value) => {
+    if(value) {
+        if(ballText.classList.contains('off-fill'))
+        {
+            ballText.classList.remove('off-fill');
+            ballText.classList.add('on-fill');
+        }
+    }
+    else
+    {
+        if(ballText.classList.contains('on-fill'))
+        {
+            ballText.classList.add('off-fill');
+            ballText.classList.remove('on-fill');
+        }
+    }
+});
 
 // The following case is an example, for a robot with an arm at the front.
 NetworkTables.addKeyListener('/SmartDashboard/arm/encoder', (key, value) => {
