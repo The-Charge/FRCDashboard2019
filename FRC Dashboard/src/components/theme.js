@@ -7,7 +7,7 @@ ui.theme = {
 // Listen for a theme change
 NetworkTables.addKeyListener('/SmartDashboard/theme', (key, value) => {
     ui.theme.select.value = value;
-    ui.theme.link.href = 'css/' + value + '.css';
+    ui.theme.link.href = 'css/themes/' + value + '.css';
 });
 
 // When theme selection is made, turn on that theme

@@ -19,7 +19,7 @@ body {
     overflow: hidden;
     background: #222;
 }
-button, input[type="text"], input[type="number"], .select-container, select {
+button, input[type="text"], input[type="number"], input[type="button"], .select-container, select {
     color: white;
     background: #444;
     border: none;
@@ -111,59 +111,6 @@ text {
     stroke: none;
     fill: white;
 }
-.on-fill {
-    fill: lime;
-}
-.on-stroke {
-    stroke: lime;
-}
-.off-fill {
-    fill: red;
-}
-.off-stroke {
-    stroke: red;
-}
-.status-text {
-    font-size: 30px;
-    font-weight: 700;
-}
-#line-follow {
-    width: 125px;
-    height: 175px;
-}
-#ball-pickup {
-    width: 125px;
-    height: 175px;
-}
-#gyro {
-    width: 175px;
-    height: 175px;
-    margin-left: 0px;
-    margin-top: 15px;
-}
-#gyro-arm {
-    -webkit-transform-origin: bottom;
-    -ms-transform-origin: bottom;
-    transform-origin: bottom;
-}
-#gyro-number {
-    font-size: 25px;
-    text-anchor: middle;
-}
-#robot-diagram {
-    position: absolute;
-    bottom: 1px;
-    right: 1vw;
-}
-#robot-arm {
-    -webkit-transform-origin: right;
-    -ms-transform-origin: right;
-    transform-origin: right;
-}
-#team {
-    font-size: 28px;
-    letter-spacing: -1px;
-}
 aside {
     right: 0;
     top: 0;
@@ -196,43 +143,4 @@ body.login #login {
 }
 #login > button {
     margin-left: 5px;
-}
-.guide-line-off {
-    stroke: red;
-    stroke-dasharray: 8, 8;
-}
-.guide-text-off {
-    fill: red;
-    stroke-width: 1;
-}
-.guide-line-on {
-    stroke: #59f442;
-    stroke-width: 3;
-    stroke-dasharray: 8, 8;
-}
-.guide-text-on {
-    fill: #59f442;
-    font-weight: bold;
-}
-.guide-text-mid {
-    fill: orange;
-    font-weight: bold;
-}
-.guide-warning {
-    stroke: black;
-    fill: orange;
-}
-.guide-warning-icon-text {
-    fill: black;
-    font-weight: 800;
-}
-.guide-warning-text {
-    fill: orange;
-    font-weight: 700;
-}
-.filled-shape {
-    /* fill: white; */
-}
-#pickup-status {
-    font-weight: 900 !important;
 }

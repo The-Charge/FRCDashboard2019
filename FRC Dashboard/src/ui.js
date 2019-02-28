@@ -1,4 +1,9 @@
-// Define UI elements
+// ---------- DEFINE UI ELEMENTS ---------- //
+
+
+
+
+
 let ui = {
     timer: document.getElementById('timer'),
     robotState: document.getElementById('robot-state').firstChild,
@@ -29,45 +34,12 @@ let ui = {
 
 
 
+
 // ---------- KEY EVENT LISTENERS ---------- //
 
 
 
 
-
-function updateLight(key, value) {
-    // Get ID of the changed light
-    var lightName = key.substring(16, key.length);
-    var light = document.getElementById(lightName);
-    if (value == true) { // If true, fill the circle
-        //document.getElementById(lightName).style.fill = "#59f442";
-        // The commented line below would set it the fill to the current theme, but it's not working
-        //document.getElementById(propName).style.fill = document.getElementById(propName).style.stroke;
-
-        var element = document.getElementById('light_0');
-        // var style = window.getComputedStyle(element);
-        // var color = style.getPropertyValue('stroke');
-        // document.getElementById('test-data').innerHTML = color;
-        // document.getElementById(lightName).classList.add("filledShape");
-
-        if (!light.classList.contains('light-on')) {
-            light.classList.add("light-on");
-            //light.style.fill = window.getComputedStyle(light).getPropertyValue('stroke');
-        }
-    }
-    else if (value == false) { // I false, empty the circle
-        //document.getElementById(lightName).style.fill = "none";
-        if (light.classList.contains('light-on')) {
-            light.classList.remove("light-on");
-            //light.style.fill = 'none';
-        }
-    }
-}
-NetworkTables.addKeyListener('/SmartDashboard/light_0', updateLight);
-NetworkTables.addKeyListener('/SmartDashboard/light_1', updateLight);
-NetworkTables.addKeyListener('/SmartDashboard/light_2', updateLight);
-NetworkTables.addKeyListener('/SmartDashboard/light_3', updateLight);
-NetworkTables.addKeyListener('/SmartDashboard/light_4', updateLight);
 
 // Gyro rotation
 let updateGyro = (key, value) => {
@@ -84,19 +56,13 @@ NetworkTables.addKeyListener('/SmartDashboard/drive/navx/yaw', updateGyro);
 
 NetworkTables.addKeyListener('/SmartDashboard/Ball Detected',(key, value) => {
     if(value) {
-        if(ballText.classList.contains('off-fill'))
-        {
-            ballText.classList.remove('off-fill');
-            ballText.classList.add('on-fill');
-        }
+        ballText.classList.remove('off-fill');
+        ballText.classList.add('on-fill');
     }
     else
     {
-        if(ballText.classList.contains('on-fill'))
-        {
-            ballText.classList.add('off-fill');
-            ballText.classList.remove('on-fill');
-        }
+        ballText.classList.add('off-fill');
+        ballText.classList.remove('on-fill');
     }
 });
 
@@ -246,6 +212,16 @@ ui.armPosition.oninput = function() {
 ui.pickupPosition.oninput = function() {
     NetworkTables.putValue('/SmartDashboard/pickup/encoder', parseInt(this.value));
 };
+
+
+
+
+
+// ---------- OTHER EVENT LISTENERS ---------- //
+
+
+
+
 
 addEventListener('error',(ev)=>{
     ipc.send('windowError',{mesg:ev.message,file:ev.filename,lineNumber:ev.lineno})
