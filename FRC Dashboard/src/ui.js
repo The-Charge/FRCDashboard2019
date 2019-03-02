@@ -73,6 +73,7 @@ function updateLineFollow(key, value) {
     if(value == true) {
         ui.line.text.classList.remove('fill-off');
         ui.line.text.classList.add('fill-on');
+        ui.line.text.innerHTML = "Found";
         ui.line.icon.classList.remove('fill-off');
         ui.line.icon.classList.add('fill-on');
         ui.line.icon.classList.remove('stroke-off');
@@ -81,6 +82,7 @@ function updateLineFollow(key, value) {
     else {
         ui.line.text.classList.add('fill-off');
         ui.line.text.classList.remove('fill-on');
+        ui.line.text.innerHTML = "None";
         ui.line.icon.classList.add('fill-off');
         ui.line.icon.classList.remove('fill-on');
         ui.line.icon.classList.add('stroke-off');
@@ -110,6 +112,7 @@ NetworkTables.addKeyListener('/SmartDashboard/Ball Detected', (key, value) => {
     if(value == true) { // Don't change this to if(value), sometimes it will come through as "true"
         ui.ball.text.classList.remove('fill-off');
         ui.ball.text.classList.add('fill-on');
+        ui.ball.text.innerHTML = "Ball";
         ui.ball.icon.classList.remove('fill-off');
         ui.ball.icon.classList.add('fill-on');
         ui.ball.icon.classList.remove('stroke-off');
@@ -118,6 +121,7 @@ NetworkTables.addKeyListener('/SmartDashboard/Ball Detected', (key, value) => {
     else {
         ui.ball.text.classList.add('fill-off');
         ui.ball.text.classList.remove('fill-on');
+        ui.ball.text.innerHTML = "None";
         ui.ball.icon.classList.add('fill-off');
         ui.ball.icon.classList.remove('fill-on');
         ui.ball.icon.classList.add('stroke-off');
@@ -165,7 +169,7 @@ NetworkTables.addKeyListener('/SmartDashboard/Elevator Encoder', (key, value) =>
 });
 
 // Listener for the ball-pickup extension
-NetworkTables.addKeyListener('/SmartDashboard/Extention Out', (key, value) => {
+NetworkTables.addKeyListener('/SmartDashboard/Extension Out', (key, value) => {
     // 0 is all the way back, 1200 is 45 degrees forward. We don't want it going past that.
     if (value) {
         ui.robotDiagram.pickupLong.style.x = String(50);
@@ -192,7 +196,7 @@ NetworkTables.addKeyListener('/SmartDashboard/example_variable', (key, value) =>
     ui.example.readout.data = 'Value is ' + value;
 });
 
-NetworkTables.addKeyListener('/robot/time', (key, value) => {
+NetworkTables.addKeyListener('/SmartDashboard/Match Time', (key, value) => {
     // This is an example of how a dashboard could display the remaining time in a match.
     // We assume here that value is an integer representing the number of seconds left.
     ui.timer.innerHTML = value < 0 ? '0:00' : Math.floor(value / 60) + ':' + (value % 60 < 10 ? '0' : '') + value % 60;
@@ -239,7 +243,7 @@ ui.gyro.container.onclick = function() {
     // Store previous gyro val, will now be subtracted from val for callibration
     ui.gyro.offset = ui.gyro.val;
     // Trigger the gyro to recalculate value.
-    updateGyro('/SmartDashboard/drive/navx/yaw', ui.gyro.val);
+    updateGyro('/SmartDashboard/Yaw', ui.gyro.val);
 };
 // Update NetworkTables when autonomous selector is changed
 ui.input.autoSelect.onchange = function() {
