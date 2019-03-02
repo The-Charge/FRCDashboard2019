@@ -1,19 +1,4 @@
-.on-fill {
-    fill: lime;
-}
-.on-stroke {
-    stroke: lime;
-}
-.off-fill {
-    fill: red;
-}
-.off-stroke {
-    stroke: red;
-}
-.status-text {
-    font-size: 30px;
-    font-weight: 700;
-}
+/* Outer SVG Elements */
 #line-follow {
     width: 125px;
     height: 175px;
@@ -28,6 +13,14 @@
     margin-left: 0px;
     margin-top: 15px;
 }
+#robot-diagram {
+    position: absolute;
+    bottom: 1px;
+    right: 1vw;
+}
+
+/* Specific Elements */
+
 #gyro-arm {
     -webkit-transform-origin: bottom;
     -ms-transform-origin: bottom;
@@ -36,11 +29,6 @@
 #gyro-number {
     font-size: 25px;
     text-anchor: middle;
-}
-#robot-diagram {
-    position: absolute;
-    bottom: 1px;
-    right: 1vw;
 }
 #robot-arm {
     -webkit-transform-origin: right;
@@ -51,27 +39,51 @@
     font-size: 28px;
     letter-spacing: -1px;
 }
+#error-bang {
+    fill: black;
+    font-size: 50px;
+    font-weight: 700px;
+    text-anchor: middle;
+}
+.error-text {
+    fill: orange;
+    letter-spacing: -1px;
+    font-weight: bolder;
+    text-anchor: middle;
+}
 
-.guide-line-off {
-    stroke: red;
+/* General Elements */
+
+.guide-line {
+    stroke-width: 1;
     stroke-dasharray: 8, 8;
 }
-.guide-text-off {
-    fill: red;
-    stroke-width: 1;
-}
-.guide-line-on {
+.stroke-on {
     stroke: #59f442;
     stroke-width: 3;
-    stroke-dasharray: 8, 8;
 }
-.guide-text-on {
+.stroke-mid {
+    stroke: orange;
+}
+.stroke-off {
+    stroke: red;
+}
+
+.fill-on {
     fill: #59f442;
     font-weight: bold;
 }
-.guide-text-mid {
+.fill-mid {
     fill: orange;
     font-weight: bold;
+}
+.fill-off {
+    fill: red;
+}
+
+.status-text {
+    font-size: 30px;
+    font-weight: 700;
 }
 .guide-warning {
     stroke: black;
@@ -84,9 +96,6 @@
 .guide-warning-text {
     fill: orange;
     font-weight: 700;
-}
-.filled-shape {
-    /* fill: white; */
 }
 #pickup-status {
     font-weight: 900 !important;

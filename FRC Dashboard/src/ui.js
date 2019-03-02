@@ -13,22 +13,36 @@ let ui = {
         offset: 0,
         visualVal: 0,
         arm: document.getElementById('gyro-arm'),
-        number: document.getElementById('gyro-number')
+        number: document.getElementById('gyro-number'),
     },
     robotDiagram: {
         arm: document.getElementById('robot-arm'),
-        pickup_long: document.getElementById('pickup-long'),
-        pickup_short: document.getElementById('pickup-short'),
+        pickupLong: document.getElementById('pickup-long'),
+        pickupShort: document.getElementById('pickup-short'),
+        pickupStatus: document.getElementById('pickup-status'),
     },
     example: {
         button: document.getElementById('example-button'),
-        readout: document.getElementById('example-readout').firstChild
+        readout: document.getElementById('example-readout').firstChild,
     },
-    ballIcon: document.getElementById('ball-icon'),
-    ballText: document.getElementById('ball-text'),
-    autoSelect: document.getElementById('auto-select'),
-    armPosition: document.getElementById('arm-position'),
-    pickupPosition: document.getElementById('pickup-position')
+    ball: {
+        icon: document.getElementById('ball-icon'),
+        text: document.getElementById('ball-text'),
+    },
+    line: {
+        icon: document.getElementById('line-icon'),
+        text: document.getElementById('line-text'),
+    },
+    input: {
+        autoSelect: document.getElementById('auto-select'),
+        armPosition: document.getElementById('arm-position'),
+    },
+    alert: {
+        icon: document.getElementById('error-icon'),
+        bang: document.getElementById('error-bang'),
+        textL1: document.getElementById('error-text-l1'),
+        textL2: document.getElementById('error-text-l2'),
+    }
 };
 
 
@@ -52,96 +66,123 @@ let updateGyro = (key, value) => {
     ui.gyro.arm.style.transform = `rotate(${ui.gyro.visualVal}deg)`;
     ui.gyro.number.innerHTML = ui.gyro.visualVal + 'º';
 };
-NetworkTables.addKeyListener('/SmartDashboard/drive/navx/yaw', updateGyro);
+NetworkTables.addKeyListener('/SmartDashboard/Yaw', updateGyro);
 
-NetworkTables.addKeyListener('/SmartDashboard/Ball Detected',(key, value) => {
-    if(value) {
-        ballText.classList.remove('off-fill');
-        ballText.classList.add('on-fill');
+// Line Sensor
+function updateLineFollow(key, value) {
+    if(value == true) {
+        ui.line.text.classList.remove('fill-off');
+        ui.line.text.classList.add('fill-on');
+        ui.line.icon.classList.remove('fill-off');
+        ui.line.icon.classList.add('fill-on');
+        ui.line.icon.classList.remove('stroke-off');
+        ui.line.icon.classList.add('stroke-on');
     }
-    else
-    {
-        ballText.classList.add('off-fill');
-        ballText.classList.remove('on-fill');
+    else {
+        ui.line.text.classList.add('fill-off');
+        ui.line.text.classList.remove('fill-on');
+        ui.line.icon.classList.add('fill-off');
+        ui.line.icon.classList.remove('fill-on');
+        ui.line.icon.classList.add('stroke-off');
+        ui.line.icon.classList.remove('stroke-on');
+    }
+}
+NetworkTables.addKeyListener('/SmartDashboard/Any Sensor', updateLineFollow)
+
+// Elevator Alert
+NetworkTables.addKeyListener('/SmartDashboard/Elevator Alert', (key, value) => {
+    if (value == true) { // Don't change this to if(value), sometimes it will come through as "true"
+        ui.alert.icon.style.visibility = "visible";
+        ui.alert.bang.style.visibility = "visible";
+        ui.alert.textL1.style.visibility = "visible";
+        ui.alert.textL2.style.visibility = "visible";
+    }
+    else {
+        ui.alert.icon.style.visibility = "hidden";
+        ui.alert.bang.style.visibility = "hidden";
+        ui.alert.textL1.style.visibility = "hidden";
+        ui.alert.textL2.style.visibility = "hidden";
     }
 });
 
-// The following case is an example, for a robot with an arm at the front.
-NetworkTables.addKeyListener('/SmartDashboard/arm/encoder', (key, value) => {
-    // 0 is all the way back, 1200 is 45 degrees forward. We don't want it going past that.
+// Ball Sensor
+NetworkTables.addKeyListener('/SmartDashboard/Ball Detected', (key, value) => {
+    if(value == true) { // Don't change this to if(value), sometimes it will come through as "true"
+        ui.ball.text.classList.remove('fill-off');
+        ui.ball.text.classList.add('fill-on');
+        ui.ball.icon.classList.remove('fill-off');
+        ui.ball.icon.classList.add('fill-on');
+        ui.ball.icon.classList.remove('stroke-off');
+        ui.ball.icon.classList.add('stroke-on');
+    }
+    else {
+        ui.ball.text.classList.add('fill-off');
+        ui.ball.text.classList.remove('fill-on');
+        ui.ball.icon.classList.add('fill-off');
+        ui.ball.icon.classList.remove('fill-on');
+        ui.ball.icon.classList.add('stroke-off');
+        ui.ball.icon.classList.remove('stroke-on');
+    }
+});
+
+// Listener for the elevator encoder
+NetworkTables.addKeyListener('/SmartDashboard/Elevator Encoder', (key, value) => {
+    // 0 is all the way back, 28000 is max elevation. We don't want it going past that.
     if (value > 28000) {
         value = 28000;
     }
     else if (value < 0) {
         value = 0;
     }
-    // Calculate visual rotation of arm
-    var height = 160 + (value / (140));    //Should scale the arm correctly
-    // Rotate the arm in diagram to match real arm
+    // Calculate visual height of arm
+    var height = 360 - (value / (140));    //Should scale the arm correctly
+    // Raise/lower the arm in diagram to match real arm
 
+    // Update guide-lines
     function updateGuide(value, test, level) {
         var line = document.getElementById(level + "-guide-line");
         var text = document.getElementById(level + "-guide-text");
-        if (test - 1000 < value && value < test + 1000) {
-            if (!line.classList.contains('guide-line-on')) {
-                line.classList.add("guide-line-on");
-                line.classList.remove("guide-line-off");
-                text.classList.add("guide-text-on");
-                text.classList.remove("guide-text-off");
-            }
+        var error = 600;
+        if (test - error < value && value < test + error) {
+            line.classList.add("stroke-on");
+            line.classList.remove("stroke-off");
+            text.classList.add("fill-on");
+            text.classList.remove("fill-off");
         }
         else {
-            if (line.classList.contains('guide-line-on')) {
-                line.classList.add("guide-line-off");
-                line.classList.remove("guide-line-on");
-                text.classList.add("guide-text-off");
-                text.classList.remove("guide-text-on");
-            }
+            line.classList.add("stroke-off");
+            line.classList.remove("stroke-on");
+            text.classList.add("fill-off");
+            text.classList.remove("fill-on");
         }
     }
-
-    updateGuide(value, 0, "high");
-    updateGuide(value, 9333.333, "middle");
-    updateGuide(value, 18666.666, "low");
-    updateGuide(value, 28000, "pickup");
+    updateGuide(value, 28000, "high");
+    updateGuide(value, 18666.666, "middle");
+    updateGuide(value, 9333.333, "low");
+    updateGuide(value, 0, "pickup");
 
     ui.robotDiagram.arm.style.y = String(height);
 });
 
-// The following case is an example, for a robot with an arm at the front.
-NetworkTables.addKeyListener('/SmartDashboard/pickup/encoder', (key, value) => {
+// Listener for the ball-pickup extension
+NetworkTables.addKeyListener('/SmartDashboard/Extention Out', (key, value) => {
     // 0 is all the way back, 1200 is 45 degrees forward. We don't want it going past that.
-    if (value > 1200) {
-        value = 1200;
-    }
-    else if (value < 0) {
-        value = 0;
-    }
-    // Calculate visual rotation of arm
-    var length = 50 + (value / 14);
-    // Rotate the arm in diagram to match real arm
+    if (value) {
+        ui.robotDiagram.pickupLong.style.x = String(50);
+        ui.robotDiagram.pickupShort.style.x = String(50);
 
-    if (-200 < value && value < 200) {
-        document.getElementById("pickup-status").classList.add("guide-text-on");
-        document.getElementById("pickup-status").classList.remove("guide-text-off");
-        document.getElementById("pickup-status").classList.remove("guide-text-mid");
-        document.getElementById("pickup-status").innerHTML = "Out";
-    }
-    else if (1000 < value && value < 1400) {
-        document.getElementById("pickup-status").classList.add("guide-text-off");
-        document.getElementById("pickup-status").classList.remove("guide-text-on");
-        document.getElementById("pickup-status").classList.remove("guide-text-mid");
-        document.getElementById("pickup-status").innerHTML = "In";
+        ui.robotDiagram.pickupStatus.classList.add("fill-on");
+        ui.robotDiagram.pickupStatus.classList.remove("fill-off");
+        ui.robotDiagram.pickupStatus.innerHTML = "Out";
     }
     else {
-        document.getElementById("pickup-status").classList.add("guide-text-mid");
-        document.getElementById("pickup-status").classList.remove("guide-text-on");
-        document.getElementById("pickup-status").classList.remove("guide-text-off");
-        document.getElementById("pickup-status").innerHTML = "-----";
-    }
+        ui.robotDiagram.pickupLong.style.x = String(136);
+        ui.robotDiagram.pickupShort.style.x = String(136);
 
-    ui.robotDiagram.pickup_long.style.x = String(length);
-    ui.robotDiagram.pickup_short.style.x = String(length);
+        ui.robotDiagram.pickupStatus.classList.add("fill-off");
+        ui.robotDiagram.pickupStatus.classList.remove("fill-on");
+        ui.robotDiagram.pickupStatus.innerHTML = "In";
+    }
 });
 
 // This button is just an example of triggering an event on the robot by clicking a button.
@@ -160,22 +201,22 @@ NetworkTables.addKeyListener('/robot/time', (key, value) => {
 // Load list of prewritten autonomous modes
 NetworkTables.addKeyListener('/SmartDashboard/autonomous/modes', (key, value) => {
     // Clear previous list
-    while (ui.autoSelect.firstChild) {
-        ui.autoSelect.removeChild(ui.autoSelect.firstChild);
+    while (ui.input.autoSelect.firstChild) {
+        ui.input.autoSelect.removeChild(ui.input.autoSelect.firstChild);
     }
     // Make an option for each autonomous mode and put it in the selector
     for (let i = 0; i < value.length; i++) {
         var option = document.createElement('option');
         option.appendChild(document.createTextNode(value[i]));
-        ui.autoSelect.appendChild(option);
+        ui.input.autoSelect.appendChild(option);
     }
     // Set value to the already-selected mode. If there is none, nothing will happen.
-    ui.autoSelect.value = NetworkTables.getValue('/SmartDashboard/currentlySelectedMode');
+    ui.input.autoSelect.value = NetworkTables.getValue('/SmartDashboard/currentlySelectedMode');
 });
 
 // Load list of prewritten autonomous modes
 NetworkTables.addKeyListener('/SmartDashboard/autonomous/selected', (key, value) => {
-    ui.autoSelect.value = value;
+    ui.input.autoSelect.value = value;
 });
 
 
@@ -201,16 +242,16 @@ ui.gyro.container.onclick = function() {
     updateGyro('/SmartDashboard/drive/navx/yaw', ui.gyro.val);
 };
 // Update NetworkTables when autonomous selector is changed
-ui.autoSelect.onchange = function() {
+ui.input.autoSelect.onchange = function() {
     NetworkTables.putValue('/SmartDashboard/autonomous/selected', this.value);
 };
 // Get value of arm height slider when it's adjusted
-ui.armPosition.oninput = function() {
-    NetworkTables.putValue('/SmartDashboard/arm/encoder', parseInt(this.value));
+ui.input.armPosition.oninput = function() {
+    NetworkTables.putValue('/SmartDashboard/Elevator Encoder', parseInt(this.value));
 };
 // Get value of pickup position slider when it's adjusted
 ui.pickupPosition.oninput = function() {
-    NetworkTables.putValue('/SmartDashboard/pickup/encoder', parseInt(this.value));
+    NetworkTables.putValue('/SmartDashboard/pickup/encoder', this.className != 'active');
 };
 
 
