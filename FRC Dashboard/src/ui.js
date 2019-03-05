@@ -20,6 +20,8 @@ let ui = {
         pickupLong: document.getElementById('pickup-long'),
         pickupShort: document.getElementById('pickup-short'),
         pickupStatus: document.getElementById('pickup-status'),
+        hatch: document.getElementById('robot-hatch'),
+        hatchText: document.getElementById('hatch-text'),
     },
     example: {
         button: document.getElementById('example-button'),
@@ -129,6 +131,35 @@ NetworkTables.addKeyListener('/SmartDashboard/Ball Detected', (key, value) => {
     }
 });
 
+//Listener for the hatch grabber
+NetworkTables.addKeyListener('/SmartDashboard/Hatch Up', (key, value) => {
+
+    if(value == 'true') {
+        value = true;
+    }
+    else if(value == 'false') {
+        value = false;
+    }
+
+    if(value) {
+        ui.robotDiagram.hatchText.innerHTML = "Grabbed";
+        
+        ui.robotDiagram.hatchText.classList.remove("fill-off");
+        ui.robotDiagram.hatchText.classList.add("fill-on");
+
+        
+        ui.robotDiagram.hatch.style.transform='rotate(45deg)';
+    }
+    else {
+        ui.robotDiagram.hatchText.innerHTML = "No Hatch";
+        
+        ui.robotDiagram.hatchText.classList.remove("fill-on");
+        ui.robotDiagram.hatchText.classList.add("fill-off");
+        
+        ui.robotDiagram.hatch.style.transform='rotate(0deg)';
+    }
+});
+
 // Listener for the elevator encoder
 NetworkTables.addKeyListener('/SmartDashboard/Elevator Encoder', (key, value) => {
     // 0 is all the way back, 28000 is max elevation. We don't want it going past that.
@@ -165,6 +196,8 @@ NetworkTables.addKeyListener('/SmartDashboard/Elevator Encoder', (key, value) =>
     updateGuide(value, 9333.333, "low");
     updateGuide(value, 0, "pickup");
 
+    
+    ui.robotDiagram.hatch.style.y = String(height - 10);
     ui.robotDiagram.arm.style.y = String(height);
 });
 
