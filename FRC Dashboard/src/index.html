@@ -59,15 +59,18 @@
         </svg>
         <!-- Robot Diagram -->
         <svg id="robot-diagram" width="450" height="450">
+
             <!-- Guide lines -->
-            <line id="high-guide-line" class="guide-line stroke-off" x1="100" y1="170" x2="370" y2="170"></line>
-            <line id="middle-guide-line" class="guide-line stroke-off" x1="100" y1="235" x2="370" y2="235"></line>
-            <line id="low-guide-line" class="guide-line stroke-off" x1="100" y1="300" x2="370" y2="300"></line>
-            <line id="pickup-guide-line" class="guide-line stroke-off" x1="100" y1="357" x2="370" y2="357"></line>
-            <text id="high-guide-text" class="fill-off" x="375" y="175" text-anchor="left">High</text>
-            <text id="middle-guide-text" class="fill-off" x="375" y="240" text-anchor="left">Middle</text>
-            <text id="low-guide-text" class="fill-off" x="375" y="305" text-anchor="left">Low</text>
-            <text id="pickup-guide-text" class="fill-off" x="375" y="363" text-anchor="left">Pickup</text>
+            <line id="mid-rocket-guide-line" class="guide-line stroke-off" x1="100" y1="200" x2="340" y2="200"></line>
+            <line id="cargo-ship-guide-line" class="guide-line stroke-off" x1="100" y1="260" x2="340" y2="260"></line>
+            <line id="low-rocket-guide-line" class="guide-line stroke-off" x1="100" y1="300" x2="340" y2="300"></line>
+            <line id="pickup-guide-line" class="guide-line stroke-off" x1="100" y1="367" x2="340" y2="367"></line>
+            
+            <text id="mid-rocket-guide-text" class="fill-off" x="345" y="205" text-anchor="left">Mid Rocket</text>
+            <text id="cargo-ship-guide-text" class="fill-off" x="345" y="265" text-anchor="left">Cargo Ship</text>
+            <text id="low-rocket-guide-text" class="fill-off" x="345" y="305" text-anchor="left">Low Rocket</text>
+            <text id="pickup-guide-text" class="fill-off" x="345" y="373" text-anchor="left">Pickup</text>
+            
             <text id="pickup-status" class="fill-off" x="70" y="400" text-anchor="right">In</text>
 
             <!-- Wheels -->
@@ -84,12 +87,9 @@
             <!-- Elevator arm -->
             <rect id="robot-arm" x="150" y="160" width="100" height="15"></rect>
 
-            <!-- Elevator hatch holder -->
-            <rect id="robot-hatch" x="150" y="150" width="100" height="15"></rect>
-
             <!-- Ball Pickup -->
-            <rect id="pickup-long" x="110" y="363" width="200" height="5"></rect>
-            <rect id="pickup-short" x="110" y="353" width="75" height="20"></rect>
+            <rect id="pickup-long" x="110" y="356" width="200" height="5"></rect>
+            <rect id="pickup-short" x="110" y="349" width="75" height="20"></rect>
 
             <!-- Robot body -->
             <rect x="110" y="380" width="250" height="30"></rect>
@@ -121,33 +121,22 @@
                 </select>
             </div>
         </div>
-        <!-- Example value -->
-        <div id="example-section">
-            <button id="example-button">Change example value</button>
-            <p id="example-readout">Value is undefined</p>
-        </div>
         <!-- Autonomous selector -->
-        <div class="select-container">
-            <select id="auto-select">
+        <div >
+            <p>Autonomous Select:</p>
+            <select class="select-container" id="auto-select">
                 <option>No auto modes found</option>
                 <!-- This gets populated by JS -->
             </select>
         </div>
-        <!-- Elevator display -->
         <div>
-            <p>Adjust arm height</p>
-            <input id="arm-position" type="range" min="0" max="28000" value="770">
+            <svg id="hatch-grabber">
+                <!-- Elevator hatch holder -->
+                <rect id="robot-hatch" x="25" y="100" width="100" height="15"></rect>
+                <text x="5" y="150">Hatch Grabbed:</text>
+                <text id="hatch-text" class="status-text fill-on" x="5" y="180">Grabbed</text>
+            </svg>
         </div>
-        <!-- Test data output -->
-        <div>
-            <p id="test-data">Test Results Here</p>
-        </div>
-        <svg id="hatch-grabber">
-            <line x1="0" y1="0" x2="1000" y2="0"></line>
-            <line x1="0" y1="0" x2="0" y2="1000"></line>
-            <text x="5" y="150">Hatch Grabbed:</text>
-            <text id="hatch-text" class="status-text fill-on" x="5" y="175">Grabbed</text>
-        </svg>
     </aside>
 
     <!-- Other scripts and connection popup -->

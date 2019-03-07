@@ -35,7 +35,7 @@ NetworkTables.addGlobalListener(isWanted, true);
 // Function called instead of onValueChanged, used to filter out unneeded values
 function isWanted(key, value, isNew) {
     // Remove behind-the-scenes not needed variables (as defined in filterStrings below)
-    var filterStrings = [".value1", ".anotherValue2", "lastValue3"];
+    var filterStrings = [".name", ".isParented", ".controllable"];
     // Test the key against every value in filterStrings
     var i;
     for (i=0; i< filterStrings.length; i++) {

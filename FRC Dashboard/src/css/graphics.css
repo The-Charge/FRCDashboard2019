@@ -23,7 +23,7 @@
     height: 200px;
     position: absolute;
     bottom: 1px;
-    right: 1hw;
+    left: 1hw;
 }
 
 /* Specific Elements */
@@ -46,7 +46,6 @@
     -webkit-transform-origin: right;
     -ms-transform-origin: right;
     transform-origin: right;
-    stroke-width: 5px;
 }
 #team {
     font-size: 28px;

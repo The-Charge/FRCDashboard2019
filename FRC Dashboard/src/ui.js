@@ -23,10 +23,6 @@ let ui = {
         hatch: document.getElementById('robot-hatch'),
         hatchText: document.getElementById('hatch-text'),
     },
-    example: {
-        button: document.getElementById('example-button'),
-        readout: document.getElementById('example-readout').firstChild,
-    },
     ball: {
         icon: document.getElementById('ball-icon'),
         text: document.getElementById('ball-text'),
@@ -37,7 +33,6 @@ let ui = {
     },
     input: {
         autoSelect: document.getElementById('auto-select'),
-        armPosition: document.getElementById('arm-position'),
     },
     alert: {
         icon: document.getElementById('error-icon'),
@@ -46,10 +41,6 @@ let ui = {
         textL2: document.getElementById('error-text-l2'),
     }
 };
-
-
-
-
 
 // ---------- KEY EVENT LISTENERS ---------- //
 
@@ -131,32 +122,29 @@ NetworkTables.addKeyListener('/SmartDashboard/Ball Detected', (key, value) => {
     }
 });
 
-//Listener for the hatch grabber
+// Listener for hatch grabber arm
 NetworkTables.addKeyListener('/SmartDashboard/Hatch Up', (key, value) => {
-
-    if(value == 'true') {
-        value = true;
+    if(value == true) {
+        ui.robotDiagram.hatch.style.transform='rotate(45deg)';
+        ui.robotDiagram.hatch.classList.remove('stroke-on');
     }
-    else if(value == 'false') {
-        value = false;
+    else {
+        ui.robotDiagram.hatch.style.transform='rotate(0deg)';
+        ui.robotDiagram.hatch.classList.add('stroke-on');
     }
+});
 
-    if(value) {
+// Listener for hatch grabber mechanizzzm
+NetworkTables.addKeyListener('/SmartDashboard/Hatch Grab', (key, value) => {  //use NTV for has hatch
+    if(value == true) {
         ui.robotDiagram.hatchText.innerHTML = "Grabbed";
-        
         ui.robotDiagram.hatchText.classList.remove("fill-off");
         ui.robotDiagram.hatchText.classList.add("fill-on");
-
-        
-        ui.robotDiagram.hatch.style.transform='rotate(45deg)';
     }
     else {
         ui.robotDiagram.hatchText.innerHTML = "No Hatch";
-        
         ui.robotDiagram.hatchText.classList.remove("fill-on");
         ui.robotDiagram.hatchText.classList.add("fill-off");
-        
-        ui.robotDiagram.hatch.style.transform='rotate(0deg)';
     }
 });
 
@@ -191,20 +179,24 @@ NetworkTables.addKeyListener('/SmartDashboard/Elevator Encoder', (key, value) =>
             text.classList.remove("fill-on");
         }
     }
-    updateGuide(value, 28000, "high");
-    updateGuide(value, 18666.666, "middle");
-    updateGuide(value, 9333.333, "low");
-    updateGuide(value, 0, "pickup");
 
-    
-    ui.robotDiagram.hatch.style.y = String(height - 10);
+    // Ball collect: 200 (cargo)
+    // Mid rocket: 23500 (cargo)
+    // Low rocket: 900
+    // Cargo ship 15500
+
+    updateGuide(value, 23500, "mid-rocket");
+    updateGuide(value, 15500, "cargo-ship");
+    updateGuide(value, 9000, "low-rocket");
+    updateGuide(value, 200, "pickup");
+
     ui.robotDiagram.arm.style.y = String(height);
 });
 
 // Listener for the ball-pickup extension
 NetworkTables.addKeyListener('/SmartDashboard/Extension Out', (key, value) => {
     // 0 is all the way back, 1200 is 45 degrees forward. We don't want it going past that.
-    if (value) {
+    if (value || value == 'true') {
         ui.robotDiagram.pickupLong.style.x = String(50);
         ui.robotDiagram.pickupShort.style.x = String(50);
 
@@ -222,15 +214,8 @@ NetworkTables.addKeyListener('/SmartDashboard/Extension Out', (key, value) => {
     }
 });
 
-// This button is just an example of triggering an event on the robot by clicking a button.
-NetworkTables.addKeyListener('/SmartDashboard/example_variable', (key, value) => {
-    // Set class active if value is true and unset it if it is false
-    ui.example.button.classList.toggle('active', value);
-    ui.example.readout.data = 'Value is ' + value;
-});
-
+// Match time listener
 NetworkTables.addKeyListener('/SmartDashboard/Match Time', (key, value) => {
-    // This is an example of how a dashboard could display the remaining time in a match.
     // We assume here that value is an integer representing the number of seconds left.
     ui.timer.innerHTML = value < 0 ? '0:00' : Math.floor(value / 60) + ':' + (value % 60 < 10 ? '0' : '') + value % 60;
 });
@@ -266,41 +251,11 @@ NetworkTables.addKeyListener('/SmartDashboard/autonomous/selected', (key, value)
 
 
 
-// The rest of the doc is listeners for UI elements being clicked on
-ui.example.button.onclick = function() {
-    // Set NetworkTables values to the opposite of whether button has active class.
-    NetworkTables.putValue('/SmartDashboard/example_variable', this.className != 'active');
-};
-// Reset gyro value to 0 on click
-ui.gyro.container.onclick = function() {
-    // Store previous gyro val, will now be subtracted from val for callibration
-    ui.gyro.offset = ui.gyro.val;
-    // Trigger the gyro to recalculate value.
-    updateGyro('/SmartDashboard/Yaw', ui.gyro.val);
-};
 // Update NetworkTables when autonomous selector is changed
 ui.input.autoSelect.onchange = function() {
     NetworkTables.putValue('/SmartDashboard/autonomous/selected', this.value);
 };
-// Get value of arm height slider when it's adjusted
-ui.input.armPosition.oninput = function() {
-    NetworkTables.putValue('/SmartDashboard/Elevator Encoder', parseInt(this.value));
-};
-// Get value of pickup position slider when it's adjusted
-ui.pickupPosition.oninput = function() {
-    NetworkTables.putValue('/SmartDashboard/pickup/encoder', this.className != 'active');
-};
-
-
-
-
-
-// ---------- OTHER EVENT LISTENERS ---------- //
-
-
-
-
-
+// Add some error listener
 addEventListener('error',(ev)=>{
     ipc.send('windowError',{mesg:ev.message,file:ev.filename,lineNumber:ev.lineno})
 });

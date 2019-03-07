@@ -85,6 +85,7 @@ header {
     /* We found the url by going into OutlineViewer and finding CameraPublisher/cameraName/streams */
     background-image:
         url('http://10.26.19.2:1181/?action=stream');
+        /* url('http://172.22.11.2:1181/?action=stream'); Use this if you're connecting via USB */
     background-repeat: no-repeat;
     background-size: 100%;
 }
