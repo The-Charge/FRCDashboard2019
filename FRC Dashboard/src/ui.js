@@ -39,6 +39,10 @@ let ui = {
         bang: document.getElementById('error-bang'),
         textL1: document.getElementById('error-text-l1'),
         textL2: document.getElementById('error-text-l2'),
+    },
+    cameraItems: {
+        camera: document.getElementById('camera'),
+        cameraButton: document.getElementById('camera-reset'),
     }
 };
 
@@ -135,7 +139,7 @@ NetworkTables.addKeyListener('/SmartDashboard/Hatch Up', (key, value) => {
 });
 
 // Listener for hatch grabber mechanizzzm
-NetworkTables.addKeyListener('/SmartDashboard/Hatch Grab', (key, value) => {  //use NTV for has hatch
+NetworkTables.addKeyListener('/SmartDashboard/Hatch Grab', (key, value) => {
     if(value == true) {
         ui.robotDiagram.hatchText.innerHTML = "Grabbed";
         ui.robotDiagram.hatchText.classList.remove("fill-off");
@@ -248,8 +252,10 @@ NetworkTables.addKeyListener('/SmartDashboard/autonomous/selected', (key, value)
 // ---------- UI ELEMENT CLICKS ---------- //
 
 
-
-
+// Resets the camera when the reset button is clicked
+ui.cameraItems.cameraButton.onclick = function() {
+    ui.cameraItems.camera.style.backgroundImage = "url('http://10.26.19.2:1181/?action=stream')";
+}
 
 // Update NetworkTables when autonomous selector is changed
 ui.input.autoSelect.onchange = function() {
