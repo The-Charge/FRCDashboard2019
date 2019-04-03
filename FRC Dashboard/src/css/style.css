@@ -83,8 +83,11 @@ header {
     with a live-updating image feed from your camera. Using other camera streaming systems
     will require some tweaking. */
     /* We found the url by going into OutlineViewer and finding CameraPublisher/cameraName/streams */
+    /* When the camera was changed to go through the Pi, the URL was changed as well. The old URL is:
+    http://10.26.19.2:1181/?action=stream. */
+    /* IMPORTANT: IF THIS DOES NOT WORK, TRY REMOVING '.mfpg' FROM THE END */
     background-image:
-        url('http://10.26.19.2:1181/?action=stream');
+        url('http://frcvision.local:1181/stream.mjpg');
     background-repeat: no-repeat;
     background-size: 100%;
 }
