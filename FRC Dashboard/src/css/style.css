@@ -87,6 +87,7 @@ header {
     http://10.26.19.2:1181/?action=stream. */
     /* IMPORTANT: IF THIS DOES NOT WORK, TRY REMOVING '.mfpg' FROM THE END */
     background-image:
+    /*  url('http://10.26.19.2:1181/?action=stream');*/
         url('http://frcvision.local:1181/stream.mjpg');
     background-repeat: no-repeat;
     background-size: 100%;
