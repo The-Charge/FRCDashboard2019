@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<!-- RoboRIO ID is: 10.26.19.2 -->
+
+<head>
+    <meta charset="utf-8">
+    <title>FRC Dashboard</title>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/graphics.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/tuning.css">
+    <link id="theme-link" rel="stylesheet" href>
+</head>
+
+<body>
+    <!-- Header and time elements-->
+    <div id="timer">2:15</div>
+    <header>
+        <!-- Tells whether robot is connected to dashboard. -->
+        <div id="robot-state">Unknown state</div>
+        <button id="connect-button">Connect</button>
+        <button id="tuning-button">Tuning</button>
+    </header>
+
+    <!-- Mess around with the CSS of #camera (found in css/style.css) to get it to work. -->
+    <div id="camera"></div>
+
+    <!-- Tuning code follows -->
+    <div id="tuning">
+        <input type="text" placeholder="Property" id="name">
+        <input type="text" placeholder="Value" id="value">
+        <button id="set">Set</button>
+        <button id="get">Get</button>
+        <button id="add">Add</button>
+    </div>
+
+    <!-- The main body of the dashboard, by default contains the gyro monitor and the robot diagram -->
+    <article>
+        <!-- Gyroscope -->
+        <svg id="gyro">
+            <circle cx="85" cy="85" r="83"></circle>
+            <circle cx="85" cy="85" r="50"></circle>
+            <rect id="gyro-arm" x="80" y="5" width="10" height="80"></rect>
+            <text id="gyro-number" x="90" y="115">0º</text>
+        </svg>
+        <!-- Line Detector -->
+        <svg id="line-follow">
+            <text x="5" y="20">Line Follow:</text>
+            <text id="line-text" class="status-text fill-on" x="5" y="50">Found</text>
+            <line class="border" x1="5" y1="65" x2="120" y2="65"/>
+            <circle id="line-icon" class="fill-on stroke-on" cx="62.5" cy="110" r="30"/>
+        </svg>
+        <!-- Ball Detector -->
+        <svg id="ball-pickup">
+            <text x="5" y="20">Ball Sensor:</text>
+            <text id="ball-text" class="status-text fill-off" x="5" y="50">None</text>
+            <line class="border" x1="5" y1="65" x2="120" y2="65"/>
+            <polygon id="ball-icon" class="fill-off stroke-off" points="50,80 80,80 70,100 80,100 40,140 50,105 40,105" />
+        </svg>
+        <!-- Robot Diagram -->
+        <svg id="robot-diagram" width="450" height="450">
+            <!-- Guide lines -->
+            <line id="high-guide-line" class="guide-line stroke-off" x1="100" y1="170" x2="370" y2="170"></line>
+            <line id="middle-guide-line" class="guide-line stroke-off" x1="100" y1="235" x2="370" y2="235"></line>
+            <line id="low-guide-line" class="guide-line stroke-off" x1="100" y1="300" x2="370" y2="300"></line>
+            <line id="pickup-guide-line" class="guide-line stroke-off" x1="100" y1="357" x2="370" y2="357"></line>
+            <text id="high-guide-text" class="fill-off" x="375" y="175" text-anchor="left">High</text>
+            <text id="middle-guide-text" class="fill-off" x="375" y="240" text-anchor="left">Middle</text>
+            <text id="low-guide-text" class="fill-off" x="375" y="305" text-anchor="left">Low</text>
+            <text id="pickup-guide-text" class="fill-off" x="375" y="363" text-anchor="left">Pickup</text>
+            <text id="pickup-status" class="fill-off" x="70" y="400" text-anchor="right">In</text>
+
+            <!-- Wheels -->
+            <circle cx="150" cy="410" r="25"></circle>
+            <circle cx="310" cy="410" r="25"></circle>
+            <circle cx="230" cy="410" r="25"></circle>
+            <circle cx="230" cy="410" r="10"></circle>
+            <circle cx="150" cy="410" r="10"></circle>
+            <circle cx="310" cy="410" r="10"></circle>
+            
+            <!-- Elevator tower -->
+            <rect x="225" y="150" width="15" height="250"></rect>
+            
+            <!-- Elevator arm -->
+            <rect id="robot-arm" x="150" y="160" width="100" height="15"></rect>
+
+            <!-- Elevator hatch holder -->
+            <rect id="robot-hatch" x="150" y="150" width="100" height="15"></rect>
+
+            <!-- Ball Pickup -->
+            <rect id="pickup-long" x="110" y="363" width="200" height="5"></rect>
+            <rect id="pickup-short" x="110" y="353" width="75" height="20"></rect>
+
+            <!-- Robot body -->
+            <rect x="110" y="380" width="250" height="30"></rect>
+            <text id="team" x="235" y="405" text-anchor="middle">2619</text>
+
+            <!-- Warning light -->
+            <polygon id="error-icon" class="fill-mid" points="0,250 40,190 80,250" style="stroke:black"></polygon>
+            <text id="error-bang" x="40" y="243">!</text>
+            <text id="error-text-l1" class="error-text" x=40 y="270">ELEVATOR</text>
+            <text id="error-text-l2" class="error-text" x=40 y="285">ALERT</text>
+        </svg>
+    </article>
+
+    <!-- The sidebar of the dashboard. Designed for smaller control elements like selection boxes and small buttons. -->
+    <aside>
+        <!-- Theme selector -->
+        <div>
+            <p>Theme:</p>
+            <div class="select-container">
+                <select id='theme-select'>
+                    <option>dark</option>
+                    <option>light</option>
+                    <option>green</option>
+                    <option>red</option>
+                    <option>blue</option>
+                    <option>rainbow</option>
+                    <option>dhs</option>
+                    <option>mhs</option>
+                </select>
+            </div>
+        </div>
+        <!-- Example value -->
+        <div id="example-section">
+            <button id="example-button">Change example value</button>
+            <p id="example-readout">Value is undefined</p>
+        </div>
+        <!-- Autonomous selector -->
+        <div class="select-container">
+            <select id="auto-select">
+                <option>No auto modes found</option>
+                <!-- This gets populated by JS -->
+            </select>
+        </div>
+        <!-- Elevator display -->
+        <div>
+            <p>Adjust arm height</p>
+            <input id="arm-position" type="range" min="0" max="28000" value="770">
+        </div>
+        <!-- Test data output -->
+        <div>
+            <p id="test-data">Test Results Here</p>
+        </div>
+        <svg id="hatch-grabber">
+            <line x1="0" y1="0" x2="1000" y2="0"></line>
+            <line x1="0" y1="0" x2="0" y2="1000"></line>
+            <text x="5" y="150">Hatch Grabbed:</text>
+            <text id="hatch-text" class="status-text fill-on" x="5" y="175">Grabbed</text>
+        </svg>
+    </aside>
+
+    <!-- Other scripts and connection popup -->
+    <div id="login">
+        <input id="connect-address" type="text" value="localhost" disabled>
+        <button id="connect" disabled>Connecting</button>
+    </div>
+    <script src="networktables/networktables.js"></script>
+    <script src="connection.js"></script>
+    <script src="ui.js"></script>
+    <script src="components/theme.js"></script>
+    <script src="components/tuning.js"></script>
+</body>
+
+</html>
