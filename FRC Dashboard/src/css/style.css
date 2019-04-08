@@ -87,8 +87,10 @@ header {
     http://10.26.19.2:1181/?action=stream. */
     /* IMPORTANT: IF THIS DOES NOT WORK, TRY REMOVING '.mfpg' FROM THE END */
     background-image:
-    /*  url('http://10.26.19.2:1181/?action=stream');*/
-        url('http://frcvision.local:1181/stream.mjpg');
+    /*url('http://10.26.19.2:1181/?action=stream');/*Usb Camera*/
+    /*url('http://172.22.11.2:1181/?action=stream');/*usb usb camera*/
+    url('http://frcvision.local:1181/stream.mjpg');/*Rasberry Pi IP*/
+    /*url('http://10.26.19.207:1181/?action=stream');/*Faster Rasberry Pi IP*/
     background-repeat: no-repeat;
     background-size: 100%;
 }

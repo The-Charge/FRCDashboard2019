@@ -7,6 +7,7 @@
 let ui = {
     timer: document.getElementById('timer'),
     robotState: document.getElementById('robot-state').firstChild,
+    refreshButton: document.getElementById("refresh-button"),
     gyro: {
         container: document.getElementById('gyro'),
         val: 0,
@@ -263,11 +264,21 @@ NetworkTables.addKeyListener('/SmartDashboard/autonomous/selected', (key, value)
 
 
 
+// Refresh the camera feed
+
+function refreshCamera() {
+    document.getElementById("test-data").innerHTML = "Camera refreshing...";
+    document.getElementById("camera").style.backgroundImage = url('http://frcvision.local:1181/stream.mjpg');/*Change this IP too*/
+    document.getElementById("test-data").innerHTML = "Reload Complete";
+}
+ui.refreshButton.onclick = refreshCamera;
+setInterval(refreshCamera, 1000);
+
 // The rest of the doc is listeners for UI elements being clicked on
-ui.example.button.onclick = function() {
-    // Set NetworkTables values to the opposite of whether button has active class.
-    NetworkTables.putValue('/SmartDashboard/example_variable', this.className != 'active');
-};
+// ui.example.button.onclick = function() {
+//     // Set NetworkTables values to the opposite of whether button has active class.
+//     NetworkTables.putValue('/SmartDashboard/example_variable', this.className != 'active');
+// };
 // Update NetworkTables when autonomous selector is changed
 ui.input.autoSelect.onchange = function() {
     NetworkTables.putValue('/SmartDashboard/autonomous/selected', this.value);
